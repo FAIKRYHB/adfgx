@@ -28,21 +28,38 @@ class adfgvx():
                         cookedstring+=rawstring[i]
             return cookedstring
         
-    table = ""
     
     def Substituce(self,cookedstring,table):
         burnedstring=""
-        tablecord=[["AA"],["AD"],["AF"],["AG"],["AX"],["DA"],["DD"],["DF"],["DG"],["DX"],["FA"],["FD"],["FF"],["FG"],["FX"],["GA"],["GD"],["GF"],["GG"],["GX"],["XA"],["XD"],["XF"],["XG"],["XX"]]
-        tablecordV=[["AA"],["AD"],["AF"],["AG"],["AV"],["AX"],["DA"],["DD"],["DF"],["DG"],["DV"],["DX"],["FA"],["FD"],["FF"],["FG"],["FV"],["FX"],["GA"],["GD"],["GF"],["GG"],["GV"],["GX"],["VA"],["VD"],["VF"],["VG"],["VV"],["VX"],["XA"],["XD"],["XF"],["XG"],["XV"],["XX"]]
+        tablecord=["AA","AD","AF","AG","AX","DA","DD","DF","DG","DX","FA","FD","FF","FG","FX","GA","GD","GF","GG","GX","XA","XD","XF","XG","XX"]
+        tablecordV=["AA","AD","AF","AG","AV","AX","DA","DD","DF","DG","DV","DX","FA","FD","FF","FG","FV","FX","GA","GD","GF","GG","GV","GX","VA","VD","VF","VG","VV","VX","XA","XD","XF","XG","XV","XX"]
         for i in range(0,len(cookedstring)):
             for j in range(0,len(table)):
                 if cookedstring[i]==table[j]:
                     burnedstring+=tablecord[j]
                     break
-        return tablecord
+        return burnedstring
+    
+    def Transpozice(self,key,burnedstring):
+        x=len(key)
+        sloupce=[]
+        for i in range(0,x):
+            sloupce.append([])
+        for i in range(0,len(burnedstring)):
+            for j in range(0,x):
+                if i%x==j:
+                    sloupce[j]+=burnedstring[i]
+        for i in range(1,x):
+            for j in range(0,i):
+                if key[i]<key[j]:
+                    sloupce.insert(j,sloupce.pop(i))
+        return sloupce
+                
                 
 ####
-testin="zabaskaceprespotok"
+testin="ahojpepojaksemas"
 testinstance=adfgvx()
 testout=testinstance.CookRawString(testin)
-testoutdva=
+testtable="ERHPQZBGFOAMLNYXSDITVCKJU"
+testoutdva=testinstance.Substituce(testout,testtable)
+testouttri=testinstance.Transpozice("KOLOTOC",testoutdva)
