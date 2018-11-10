@@ -45,22 +45,36 @@ class adfgvx():
         keyL=[]
         sloupce=[]
         for i in range(0,x):
-            keyL.append([key[i]])
+            keyL.append(key[i])
         for i in range(0,x):
             sloupce.append([])
         for i in range(0,len(burnedstring)):
             for j in range(0,x):
                 if i%x==j:
                     sloupce[j]+=burnedstring[i]
-        print(sloupce)
         for i in range(1,x):
             for j in range(0,i):
                 if keyL[i]<keyL[j]:
                     keyL.insert(j,keyL.pop(i))
                     sloupce.insert(j,sloupce.pop(i))
-        return sloupce
-                
-                
+        return [sloupce,keyL]
+    
+    def DeTranspozice(self,key,keyL,sloupce):
+        x=len(key)
+        for i in range(0,x):
+            for j in range(i,x):
+                if key[i]==keyL[j]:
+                    keyL.insert(i,keyL.pop(j))
+                    sloupce.insert(i,sloupce.pop(j))
+                    break
+        outstring=""
+        for i in range(0,len(sloupce[0])):
+            while len(sloupce[-1])==0:
+                sloupce.pop()
+            for j in range(0,len(sloupce)):
+                outstring+=sloupce[j].pop(0)
+        return outstring
+
 ####
 testin="ahojpepojaksemas"
 testinstance=adfgvx()
@@ -68,3 +82,6 @@ testout=testinstance.CookRawString(testin)
 testtable="ERHPQZBGFOAMLNYXSDITVCKJU"
 testoutdva=testinstance.Substituce(testout,testtable)
 testouttri=testinstance.Transpozice("KOLOTOC",testoutdva)
+testkey=testouttri[1]
+testsloupce=testouttri[0]
+DEtest=testinstance.DeTranspozice("KOLOTOC",testkey,testsloupce)
