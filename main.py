@@ -42,16 +42,21 @@ class adfgvx():
     
     def Transpozice(self,key,burnedstring):
         x=len(key)
+        keyL=[]
         sloupce=[]
+        for i in range(0,x):
+            keyL.append([key[i]])
         for i in range(0,x):
             sloupce.append([])
         for i in range(0,len(burnedstring)):
             for j in range(0,x):
                 if i%x==j:
                     sloupce[j]+=burnedstring[i]
+        print(sloupce)
         for i in range(1,x):
             for j in range(0,i):
-                if key[i]<key[j]:
+                if keyL[i]<keyL[j]:
+                    keyL.insert(j,keyL.pop(i))
                     sloupce.insert(j,sloupce.pop(i))
         return sloupce
                 
