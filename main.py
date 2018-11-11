@@ -7,7 +7,7 @@ class adfgvx():
         else:
             self.tablecord=["AA","AD","AF","AG","AV","AX","DA","DD","DF","DG","DV","DX","FA","FD","FF","FG","FV","FX","GA","GD","GF","GG","GV","GX","VA","VD","VF","VG","VV","VX","XA","XD","XF","XG","XV","XX"]
     
-    def CookRawString(self,rawstring):
+    def CookRawString(self,rawstring,iskey=False):
             cookedstring=""
             reple = [["a","á","ä","Á","Ä"],["b"],["č","ć","c","Č","Ć"],["d","ď","Ď"],["ě","é","e","ë","Ě","É","Ë"],["f"],["g"],["h"],["i","í","ï","Í","Ï"],["j"],["k"],["l","ĺ","Ĺ"],["m"],["n","ň","ń","Ň","Ń"],["o","ó","ö","Ó","Ö"],["p"],["q"],["r","ř","ŕ","Ř","Ŕ"],["š","ś","s","Š","Ś"],["t","ť","Ť"],["u","ú","ů","Ů","Ú"],["v"],["w"],["x"],["y","ý","ÿ","Ý","Ÿ"],["z","ž","ź","Ž","Ź"]]
             forThing = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
@@ -16,7 +16,7 @@ class adfgvx():
                     if rawstring[i]==" ":
                         cookedstring+="MEZERA"
                     else:
-                        if self.tablecord==25 and rawstring[i]==chr(ord(self.lang)+32):
+                        if self.tablecord==25 and rawstring[i]==chr(ord(self.lang)+32) and (not iskey):
                             if self.lang=="W":
                                 cookedstring+="V"
                             if self.lang=="J":
@@ -26,7 +26,7 @@ class adfgvx():
                                 if rawstring[i] in reple[j]:
                                     cookedstring+=forThing[j]
                 else:
-                    if self.tablecord==25 and rawstring[i]==self.lang:
+                    if self.tablecord==25 and rawstring[i]==self.lang and (not iskey):
                         if self.lang=="W":
                             cookedstring+="V"
                         if self.lang=="J":
@@ -37,6 +37,7 @@ class adfgvx():
         
     
     def Sifrovat(self,cookedstring,key,table):
+        cookedstring=self.CookRawString(cookedstring)
         #substituce
         burnedstring=""
         for i in range(0,len(cookedstring)):
@@ -44,7 +45,8 @@ class adfgvx():
                 if cookedstring[i]==table[j]:
                     burnedstring+=self.tablecord[j]
                     break
-        #print(burnedstring)
+        print(burnedstring)
+        key=self.CookRawString(key,True)
         #transpozice
         x=len(key)
         keyL=[]
@@ -57,8 +59,11 @@ class adfgvx():
             for j in range(0,x):
                 if i%x==j:
                     sloupce[j]+=burnedstring[i]
-        #print(sloupce)
-        for i in range(1,x):
+        print(sloupce)
+        while len(sloupce[-1])==0:
+            sloupce.pop()
+            keyL.pop()
+        for i in range(1,len(keyL)):
             for j in range(0,i):
                 if keyL[i]<keyL[j]:
                     keyL.insert(j,keyL.pop(i))
@@ -71,15 +76,19 @@ class adfgvx():
         for j in range(0,len(sloupce[-1])):
                 burnedstring+=sloupce[-1][j]
         #return [sloupce,keyL]
-        #print(sloupce)
+        print(sloupce)
         return burnedstring
     
     def Desifrovat(self,instring,key,table):
+        #instring=self.CookRawString(instring)
+        key=self.CookRawString(key,True)
+        x=(len(instring)-instring.count(" "))
+        if x<len(key):
+            key=key[0:x]
         x=len(key)
         sloupce=[]
         for i in range(0,x):
             sloupce.append([])
-        len(testoutdva)
         j=0
         for i in range(x):
             while instring[j]!=" ":
@@ -119,5 +128,6 @@ testinstance=adfgvx()
 testinstance.TableSize(True)
 testout=testinstance.CookRawString(testin)
 testtable="ERHPQZBGFOAMLNYXSDITVCKJU"
-testoutdva=testinstance.Sifrovat(testout,"KOLOTOC",testtable)
+testoutdva=testinstance.Sifrovat(testin,"KOLOTOC",testtable)
 Detest=testinstance.Desifrovat(testoutdva,"KOLOTOC",testtable)
+print(testout==Detest)
