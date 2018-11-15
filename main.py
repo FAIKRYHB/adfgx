@@ -1,4 +1,16 @@
-class adfgvx():
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+import sys
+
+from PyQt5.QtWidgets import QApplication, QMainWindow, QStatusBar, QFileDialog
+from PyQt5 import QtGui, uic
+
+qtCreatorFile = "dialog.ui"
+
+Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
+
+class adfgvx(QMainWindow, Ui_MainWindow):
     tablecord=[]
     lang="W"
     def TableSize(self,bit): #Checkbox
@@ -121,7 +133,25 @@ class adfgvx():
         for i in range(0,len(string),2):
             outstring+=table[self.tablecord.index(string[i]+string[i+1])]
         return outstring
+    def __init__(self):
+        QMainWindow.__init__(self)
+        Ui_MainWindow.__init__(self)
 
+        self.setupUi(self)
+        #self.key.textChanged.connect(self.ChangeTable)
+        #self.switchLang.clicked.connect(self.switchIt)
+        #self.code.clicked.connect(self.sifrovat)
+        #self.decode.clicked.connect(self.desifrovat)
+        
+        self.statusBar = QStatusBar()
+        self.setStatusBar(self.statusBar)
+
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = adfgvx()
+    window.show()
+    sys.exit(app.exec_())
 ####
 testin="ahojpepojaksemas"
 testinstance=adfgvx()
